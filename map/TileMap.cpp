@@ -1,6 +1,6 @@
 #include "TileMap.h"
 
-bool TileMap::load()
+void TileMap::load()
 {
     /* Чтение .tmx файла */
     std::ifstream mapFile("../map/map.tmx");
@@ -34,13 +34,14 @@ bool TileMap::load()
 
     /* Парсинг слоёв карты */
     node = root->first_node("layer");
+    int layer_count = 0;
     while (node)
     {
         std::string name = node->first_attribute("name")->value();
         int width = std::stoi(node->first_attribute("width")->value());
         int height = std::stoi(node->first_attribute("height")->value());
 
-        Layer layer(name, width, height);
+        layers[layer_count].setInfo(name, width, height);
 
         /* getting layer's data */
         std::string layer_data = node->first_node("data")->value();
@@ -54,7 +55,7 @@ bool TileMap::load()
 
             if (map_id == 0)
             {
-                layer.add_data(-1);
+                layers[layer_count].add_data(-1);
                 continue;
             }
 
@@ -69,8 +70,8 @@ bool TileMap::load()
                             (layer_id / tilesets[j].columns) * tilesets[j].tile_sizes.y
                     };
 
-                    layer.add_tile(layer_id, tex_cords);
-                    layer.add_data(layer_id);
+                    layers[layer_count].add_tile(layer_id, tex_cords);
+                    layers[layer_count].add_data(layer_id);
 
                     break;
                 }
@@ -81,19 +82,16 @@ bool TileMap::load()
         for (auto& tileset : tilesets)
             if (tileset.tilesetName == name)
             {
-                layer.linkTileset(&tileset);
+                layers[layer_count].linkTileset(&tileset);
                 break;
             }
 
-        layers.push_back(layer);
+        /* Загрузка всех wallBounds стен на слое */
+        layers[layer_count].loadWallBounds();
+
+        layer_count++;
         node = node->next_sibling("layer");
     }
-}
-
-void TileMap::draw(sf::RenderTarget &target, sf::RenderStates states) const
-{
-    for (auto& layer : layers)
-        layer.draw(target, states);
 }
 
 void TileMap::clip(sf::FloatRect viewRect)

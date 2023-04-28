@@ -2,30 +2,26 @@
 
 Camera::Camera()
 {
-    view.reset(sf::FloatRect(0, 0, 800, 600));
+    view.reset(sf::FloatRect(0, 0, 1920, 1080));
 }
 
-bool Camera::update(float dt)
+void Camera::update(float dt, sf::FloatRect player_bounds)
 {
-    bool flag = false;
-    sf::Vector2f offset(0, 0);
     float factor = 1.f;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { offset.y -= moveSpeed * dt; flag = true; }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { offset.y += moveSpeed * dt; flag = true; }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { offset.x -= moveSpeed * dt; flag = true; }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { offset.x += moveSpeed * dt; flag = true; }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) { factor += zoomSpeed * dt; flag = true; }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::X)) { factor -= zoomSpeed * dt; flag = true; }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+        factor += zoomSpeed * dt;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
+        factor -= zoomSpeed * dt;
 
-    if (flag)
-    {
-        view.move(offset);
-        view.zoom(factor);
-    }
 
-    return flag;
+    view.zoom(factor);
+
+    sf::Vector2f player_center(player_bounds.left + player_bounds.width / 2,
+                               player_bounds.top + player_bounds.height / 2);
+
+    view.move((player_center - view.getCenter()) * dt * 2.5f);
 }
 
 sf::FloatRect Camera::getCameraRect() const

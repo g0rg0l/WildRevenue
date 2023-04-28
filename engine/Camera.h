@@ -2,6 +2,7 @@
 #define UNTITLED_CAMERA_H
 
 #include <SFML/Graphics.hpp>
+#include <cmath>
 
 class Camera
 {
@@ -9,7 +10,7 @@ public:
     Camera();
 
 public:
-    bool update(float dt);
+    void update(float dt, sf::FloatRect player_bounds);
 
 public:
     sf::View& getView() { return view; }
@@ -19,7 +20,6 @@ private:
     sf::View view;
 
 private:
-    const float moveSpeed = 400.f;
     const float zoomSpeed = 0.5f;
 };
 

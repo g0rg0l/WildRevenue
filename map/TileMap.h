@@ -9,17 +9,20 @@
 #include "Tileset.h"
 #include "Layer.h"
 
-
-class TileMap : public sf::Drawable
+class TileMap
 {
 public:
-    bool load();
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    void load();
     void clip(sf::FloatRect viewRect);
 
 private:
     mutable std::vector<Tileset> tilesets;
-    mutable std::vector<Layer> layers;
+    mutable std::vector<Layer> layers = std::vector<Layer>(3);
+
+public:
+    Layer& terrain = layers[0];
+    Layer& decor = layers[1];
+    Layer& trees = layers[2];
 };
 
 

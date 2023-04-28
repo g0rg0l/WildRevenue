@@ -13,7 +13,32 @@
 class Layer : public sf::Drawable
 {
 public:
-    Layer(std::string  name, int width, int height) : layerName(std::move(name)), size({width, height}) {  }
+    Layer() = default;
+
+    void setInfo(std::string  name, int width, int height)
+    {
+        layerName = std::move(name);
+        size = {width, height};
+    }
+
+    void loadWallBounds()
+    {
+        for (int i = 0; i < size.x; ++i)
+            for (int j = 0; j < size.y; ++j)
+            {
+                int id = data[i + j * size.x];
+
+                if (tileset->isWall(id))
+                {
+                    sf::Vector2f pos(i * tileset->tile_sizes.x, j * tileset->tile_sizes.y);
+
+                    wallBounds.push_back(sf::FloatRect(
+                            pos.x, pos.y,
+                            tileset->tile_sizes.x, tileset->tile_sizes.y
+                            ));
+                }
+            }
+    }
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override
     {
@@ -76,6 +101,7 @@ public:
 public:
     mutable std::vector<int> data;
     mutable std::unordered_map<int, sf::Vector2f> textureCords;
+    std::vector<sf::FloatRect> wallBounds;
 
 private:
     std::string layerName;

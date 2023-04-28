@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iostream>
 #include <utility>
+#include <vector>
 
 class Tileset
 {
@@ -40,6 +41,32 @@ public:
         };
         columns = std::stoi(root->first_attribute("columns")->value());
         tilesetImageSource = root->first_node("image")->first_attribute("source")->value();
+
+        /* парсинг id стен */
+        if (tilesetName == "decor")
+        {
+            auto cur_node = root->first_node("tile");
+            while(cur_node)
+            {
+                std::string type = cur_node->first_attribute("type")->value();
+                if (type == "wall")
+                {
+                    int id = std::stoi(cur_node->first_attribute("id")->value());
+                    walls_ids.push_back(id);
+                }
+
+                cur_node = cur_node->next_sibling("tile");
+            }
+        }
+    }
+
+public:
+    bool isWall(int id) const
+    {
+        return std::find(
+                std::begin(walls_ids),
+                std::end(walls_ids),
+                id) != std::end(walls_ids);
     }
 
 public:
@@ -49,6 +76,7 @@ public:
     int firstgid;
     int columns;
     sf::Vector2f tile_sizes;
+    std::vector<int> walls_ids;
 };
 
 #endif

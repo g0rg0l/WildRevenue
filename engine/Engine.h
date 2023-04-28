@@ -5,6 +5,7 @@
 
 #include "Camera.h"
 #include "../map/TileMap.h"
+#include "../entity/EntityHolder.h"
 
 class Engine
 {
@@ -23,6 +24,7 @@ private:
 private:
     Camera camera;
     TileMap map;
+    EntityHolder entityHolder;
 };
 
 

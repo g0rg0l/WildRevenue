@@ -2,7 +2,9 @@
 
 Engine::Engine()
 {
-    window.create(sf::VideoMode(1920, 1080), "untitled");
+    window.create(sf::VideoMode::getDesktopMode(),
+                  "untitled"
+    );
 }
 
 int Engine::run_engine()
@@ -13,8 +15,10 @@ int Engine::run_engine()
     {
         float dt = clock.restart().asSeconds();
 
-        camera.update(dt);
+        entityHolder.update_entity(dt, map.decor.wallBounds);
+        camera.update(dt, entityHolder.get_player_bounds());
         map.clip(camera.getCameraRect());
+
         check_events();
         draw();
     }
@@ -37,6 +41,9 @@ void Engine::draw()
     window.setView(camera.getView());
 
     window.clear();
-    window.draw(map);
+    window.draw(map.terrain);
+    window.draw(map.decor);
+    window.draw(entityHolder);
+    window.draw(map.trees);
     window.display();
 }
