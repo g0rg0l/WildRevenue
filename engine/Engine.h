@@ -19,6 +19,7 @@ private:
 
 private:
     sf::RenderWindow window;
+    sf::RenderTexture renderTexture;
     sf::Clock clock;
 
 private:

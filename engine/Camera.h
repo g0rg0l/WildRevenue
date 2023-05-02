@@ -7,9 +7,7 @@
 class Camera
 {
 public:
-    Camera();
-
-public:
+    void reset(sf::Vector2u window_size);
     void update(float dt, sf::FloatRect player_bounds);
 
 public:
@@ -18,9 +16,8 @@ public:
 
 private:
     sf::View view;
-
-private:
-    const float zoomSpeed = 0.5f;
+    const float view_scale = 4.5;
+    const float move_speed = 2.5;
 };
 
 

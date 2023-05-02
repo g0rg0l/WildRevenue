@@ -5,8 +5,6 @@
 #include <map>
 #include <string>
 
-// Тут пока что находится только Texture holder, однако в будущем будет и реализация Sound Holde'а
-// Поэтому файл и называется "ResourceHolder"
 
 class TextureHolder
 {

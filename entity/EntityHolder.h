@@ -1,20 +1,25 @@
 #ifndef UNTITLED_ENTITYHOLDER_H
 #define UNTITLED_ENTITYHOLDER_H
 
-#include <SFML/Graphics.hpp>
+#include "StaticEntity.h"
+#include "../entity/tomato plant/TomatoPlant.h"
+#include "../entity/potato plant/PotatoPlant.h"
+#include "../entity/blue flowers/BlueFlowers.h"
 
+#include <SFML/Graphics.hpp>
 #include "player/Player.h"
+
 
 class EntityHolder : public sf::Drawable
 {
-public: /* --------- Инициализация/деструктурирование --------- */
+public:
     EntityHolder();
     ~EntityHolder() override;
 
-public: /* --------- Отрисовка хранимых объектов --------- */
+public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-public: /* --------- Обновление хранимых объектов --------- */
+public:
     void update_entity(float dt, const std::vector<sf::FloatRect>& wallBounds);
 
 public:
@@ -22,8 +27,19 @@ public:
 
 private:
     Player* player;
-
+    std::vector<StaticEntity*> static_entities;
 };
 
+
+class StaticEntityFactory
+{
+public:
+    static StaticEntity* getEntity(const std::string& type  )
+    {
+        if (type == "tomato plant") return new TomatoPlant({16, 16});
+        if (type == "potato plant") return new PotatoPlant({64, 64});
+        if (type == "blue flowers") return new BlueFlowers({128, 128});
+    }
+};
 
 #endif

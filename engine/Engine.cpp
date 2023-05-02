@@ -2,9 +2,9 @@
 
 Engine::Engine()
 {
-    window.create(sf::VideoMode::getDesktopMode(),
-                  "untitled"
-    );
+    window.create(sf::VideoMode::getDesktopMode(),"untitled");
+    camera.reset(window.getSize());
+    renderTexture.create(window.getSize().x, window.getSize().y);
 }
 
 int Engine::run_engine()
@@ -38,12 +38,17 @@ void Engine::check_events()
 
 void Engine::draw()
 {
-    window.setView(camera.getView());
+    renderTexture.setView(camera.getView());
+    renderTexture.clear();
+    renderTexture.draw(map.terrain);
+    renderTexture.draw(map.decor);
+    renderTexture.draw(entityHolder);
+    renderTexture.draw(map.trees);
+    renderTexture.display();
 
+    sf::Sprite renderSprite;
+    renderSprite.setTexture(renderTexture.getTexture());
     window.clear();
-    window.draw(map.terrain);
-    window.draw(map.decor);
-    window.draw(entityHolder);
-    window.draw(map.trees);
+    window.draw(renderSprite);
     window.display();
 }
