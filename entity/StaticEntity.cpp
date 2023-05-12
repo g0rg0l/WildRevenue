@@ -1,13 +1,15 @@
 #include "StaticEntity.h"
 
-StaticEntity::StaticEntity(const std::string &src_name, int stages_count, float stage_time, float hitbox_range, sf::Vector2f pos)
-    : src_name(src_name), stages_count(stages_count), stage_time(stage_time), hitbox_range(hitbox_range)
+StaticEntity::StaticEntity(
+        const std::string& src_name, const std::string& item_id,
+        int stages_count, float stage_time, float hitbox_range, sf::Vector2f pos)
+    : src_name(src_name), stages_count(stages_count), stage_time(stage_time), hitbox_range(hitbox_range), item_id(item_id)
 {
-    /* Загрузка текстуры и инициализация параметров спрайта */
     TextureHolder& textureholder = TextureHolder::getInstance();
     textureholder.loadFromFile("../entity/" + src_name + "/src/" + src_name + ".png", src_name);
 
     auto texture = textureholder.getResource(src_name);
+
     auto texture_size = texture->getSize();
     sprite_size = {(float) texture_size.x / (float) stages_count, (float) texture_size.y };
 
@@ -25,17 +27,17 @@ void StaticEntity::update()
         next_stage();
 }
 
-bool StaticEntity::execute()
+Item* StaticEntity::execute()
 {
+    Item* result = nullptr;
+
     if (stage == stages_count - 1)
     {
-        action();
+        result = action();
         next_stage();
-
-        return true;
     }
 
-    return false;
+    return result;
 }
 
 bool StaticEntity::is_see_player(sf::FloatRect player_hitbox)
@@ -63,4 +65,9 @@ sf::FloatRect StaticEntity::get_hitbox() const
             bounds.left - hitbox_range, bounds.top - hitbox_range,
             bounds.width + 2*hitbox_range, bounds.height + 2*hitbox_range
     };
+}
+
+std::string StaticEntity::get_returning_item_id() const
+{
+    return item_id;
 }

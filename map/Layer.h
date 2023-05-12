@@ -94,7 +94,7 @@ public:
 
         /* Загрузка изображения тайлсета */
         TextureHolder& textureHolder = TextureHolder::getInstance();
-        textureHolder.loadFromFile("/home/g0rgol/CLionProjects/untitled/map/src/" + tileset->tilesetImageSource,
+        textureHolder.loadFromFile("../map/src/" + tileset->tilesetImageSource,
                                    layerName);
     }
 

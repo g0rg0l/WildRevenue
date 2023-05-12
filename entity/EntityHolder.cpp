@@ -35,10 +35,23 @@ void EntityHolder::update_entity(float dt, const std::vector<sf::FloatRect>& wal
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::E))
         for (auto& entity : static_entities)
             if (entity->is_see_player(player->get_hitbox()))
-                if (entity->execute()) break;
+                if (player->inventory.can_be_placed_in(entity->get_returning_item_id()))
+                {
+                    Item* resultOfTryingExecute = entity->execute();
+                    if (resultOfTryingExecute)
+                    {
+                        player->inventory.add(resultOfTryingExecute);
+                        break;
+                    }
+                }
 }
 
-sf::FloatRect EntityHolder::get_player_bounds() const
+sf::FloatRect EntityHolder::get_player_bounds()
 {
     return player->get_bounds();
+}
+
+Inventory* EntityHolder::get_player_inventory()
+{
+    return &player->inventory;
 }

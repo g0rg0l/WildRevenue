@@ -8,13 +8,15 @@ class PotatoPlant : public StaticEntity
 {
 public:
     explicit PotatoPlant(sf::Vector2f pos)
-            : StaticEntity("potato plant", 5, 3.0, 4.0, pos)
+            : StaticEntity("potato plant", "potato_item", 5, 0.2, 8.0, pos)
     { }
 
 private:
-    void action() override
+    Item* action() override
     {
         std::cout << "potato executed." << std::endl;
+
+        return new Potato;
     }
 
 };

@@ -12,11 +12,13 @@ public:
 
 public:
     sf::View& getView() { return view; }
+    sf::Vector2f getCameraPosition() const;
+    sf::Vector2f getMousePosition() const;
     sf::FloatRect getCameraRect() const;
 
 private:
     sf::View view;
-    const float view_scale = 4.5;
+    const float default_view_scale = 4.5;
     const float move_speed = 2.5;
 };
 

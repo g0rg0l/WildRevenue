@@ -3,9 +3,12 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "EventWatcher.h"
 #include "Camera.h"
+#include "WorldTimeHolder.h"
 #include "../map/TileMap.h"
 #include "../entity/EntityHolder.h"
+#include "../menus/MenusHolder.h"
 
 class Engine
 {
@@ -19,13 +22,17 @@ private:
 
 private:
     sf::RenderWindow window;
-    sf::RenderTexture renderTexture;
+    sf::RenderTexture worldRenderTexture;
+    sf::RenderTexture menuRenderTexture;
     sf::Clock clock;
+    float dt;
 
 private:
+    WorldTimeHolder worldTimeHolder;
     Camera camera;
     TileMap map;
     EntityHolder entityHolder;
+    MenusHolder menusHolder;
 };
 
 

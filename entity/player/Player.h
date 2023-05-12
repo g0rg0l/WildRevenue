@@ -4,7 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include <unordered_map>
 #include <cmath>
+
 #include "../../engine/TextureHolder.h"
+#include "../../inventory/Inventory.h"
 
 class Player : public sf::Drawable
 {
@@ -38,6 +40,9 @@ private:
     const float speed = 6;
     std::string direction = "down";
     mutable bool isMoving = false;
+
+public:
+    Inventory inventory;
 };
 
 #endif

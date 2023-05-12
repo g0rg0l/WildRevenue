@@ -8,13 +8,15 @@ class TomatoPlant : public StaticEntity
 {
 public:
     explicit TomatoPlant(sf::Vector2f pos)
-        : StaticEntity("tomato plant", 5, 2.0, 8.0, pos)
+        : StaticEntity("tomato plant", "tomato_item", 5, 0.2, 8.0, pos)
     { }
 
 private:
-    void action() override
+    Item* action() override
     {
         std::cout << "tomato executed." << std::endl;
+
+        return new Tomato;
     }
 
 };

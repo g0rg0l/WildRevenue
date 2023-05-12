@@ -4,7 +4,7 @@
 #include "StaticEntity.h"
 #include "../entity/tomato plant/TomatoPlant.h"
 #include "../entity/potato plant/PotatoPlant.h"
-#include "../entity/blue flowers/BlueFlowers.h"
+#include "../entity/blue flowers/BlueFlowersPlant.h"
 
 #include <SFML/Graphics.hpp>
 #include "player/Player.h"
@@ -23,7 +23,8 @@ public:
     void update_entity(float dt, const std::vector<sf::FloatRect>& wallBounds);
 
 public:
-    sf::FloatRect get_player_bounds() const;
+    Inventory* get_player_inventory();
+    sf::FloatRect get_player_bounds();
 
 private:
     Player* player;
@@ -38,7 +39,9 @@ public:
     {
         if (type == "tomato plant") return new TomatoPlant({16, 16});
         if (type == "potato plant") return new PotatoPlant({64, 64});
-        if (type == "blue flowers") return new BlueFlowers({128, 128});
+        if (type == "blue flowers") return new BlueFlowersPlant({128, 128});
+
+        return nullptr;
     }
 };
 
