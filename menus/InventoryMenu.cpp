@@ -24,6 +24,8 @@ void InventoryMenu::create(Inventory* playerInv)
 
 void InventoryMenu::update(sf::Vector2f camera_position, sf::Vector2f mousePosition)
 {
+
+
     if (isOppening)
     {
         if (clock.getElapsedTime().asSeconds() >= open_close_time)
@@ -224,6 +226,26 @@ void InventoryMenu::execute()
 void InventoryMenu::deleteSelectedItem(int id)
 {
     player_inventory->pop(id);
+}
+
+void InventoryMenu::transfuseItems(float delta, sf::Vector2f mousePosition)
+{
+    if (isOpen)
+    {
+        for (int i = 0; i < icons.size(); ++i)
+        {
+            auto iconBounds = icons[i].getGlobalBounds();
+
+            if (iconBounds.contains(mousePosition))
+            {
+                agreeMenu.close();
+                itemStates.close();
+
+                player_inventory->transfuse(i, delta);
+                break;
+            }
+        }
+    }
 }
 
 

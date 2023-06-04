@@ -322,6 +322,7 @@ public:
     void itemUpdate();
     void itemStatesUpdate(sf::Vector2f mousePosition);
     void agreeMenuUpdate(sf::Vector2f mousePosition);
+    void transfuseItems(float delta, sf::Vector2f mousePosition);
 
 public:
     void deleteSelectedItem(int id);

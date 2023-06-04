@@ -6,7 +6,7 @@ Engine::Engine()
     camera.reset(window.getSize());
     worldRenderTexture.create(window.getSize().x, window.getSize().y);
     menuRenderTexture.create(window.getSize().x, window.getSize().y);
-    menusHolder.create(entityHolder.get_player_inventory());
+    inventory_menu.create(entityHolder.get_player_inventory());
 }
 
 int Engine::run_engine()
@@ -23,8 +23,9 @@ int Engine::run_engine()
         map.clip(camera.getCameraRect());
 
         check_events();
-        menusHolder.update(camera.getCameraPosition(),
-                           camera.getMousePosition());
+
+        inventory_menu.update(camera.getCameraPosition(), camera.getMousePosition());
+
         draw();
     }
 
@@ -39,13 +40,16 @@ void Engine::check_events()
     {
         if (event.type == sf::Event::Closed)
             window.close();
+
+        if (event.type == sf::Event::MouseWheelScrolled)
+            inventory_menu.transfuseItems(event.mouseWheelScroll.delta, camera.getMousePosition());
     }
 
 
     EventWatcher& eventWatcher = EventWatcher::getInstance();
 
     if (eventWatcher.isKeyBoardKeyTriggered(sf::Keyboard::I))
-        menusHolder.executeInventory();
+        inventory_menu.execute();
 }
 
 void Engine::draw()
@@ -61,7 +65,7 @@ void Engine::draw()
 
     menuRenderTexture.setView(camera.getView());
     menuRenderTexture.clear(sf::Color::Transparent);
-    menuRenderTexture.draw(menusHolder);
+    menuRenderTexture.draw(inventory_menu);
     menuRenderTexture.display();
 
     sf::Sprite worldRenderSprite;

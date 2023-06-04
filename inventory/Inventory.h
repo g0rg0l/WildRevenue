@@ -13,8 +13,6 @@ public:
 public:
     [[nodiscard]] std::vector<std::string> get_id_vector() const;
     [[nodiscard]] std::vector<int> get_count_vector() const;
-    [[nodiscard]] std::string get_item_name(int id) const;
-    [[nodiscard]] int get_item_count(int id) const;
 
 public:
     [[nodiscard]] bool can_be_placed_in(const std::string& item_id) const;
@@ -22,9 +20,10 @@ public:
 
     void add(Item* itemToadd);
     void pop(int id);
+    void transfuse(int id, float delta);
 
 private:
-    std::vector<Item*> data = {nullptr, nullptr, nullptr, nullptr, nullptr };
+    std::vector<Item*> data = { nullptr, nullptr, nullptr, nullptr, nullptr };
     const int stack = 16;
 };
 

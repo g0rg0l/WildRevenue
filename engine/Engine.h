@@ -8,7 +8,7 @@
 #include "WorldTimeHolder.h"
 #include "../map/TileMap.h"
 #include "../entity/EntityHolder.h"
-#include "../menus/MenusHolder.h"
+#include "../menus/InventoryMenu.h"
 
 class Engine
 {
@@ -32,7 +32,9 @@ private:
     Camera camera;
     TileMap map;
     EntityHolder entityHolder;
-    MenusHolder menusHolder;
+
+private:
+    InventoryMenu inventory_menu;
 };
 
 

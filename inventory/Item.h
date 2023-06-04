@@ -8,14 +8,17 @@ class Item
 {
 public:
     Item(std::string id, std::string name);
+    virtual ~Item() = default;
 
 public:
     virtual void increase(int n);
+    virtual void decrease(int n);
+    [[nodiscard]] virtual Item* makeNewSame() const = 0;
 
 public:
-    virtual std::string get_id() const;
-    virtual std::string get_name() const;
-    virtual int get_count() const;
+    [[nodiscard]] virtual std::string get_id() const;
+    [[nodiscard]] virtual std::string get_name() const;
+    [[nodiscard]] virtual int get_count() const;
 
 protected:
     const std::string id;
@@ -32,6 +35,8 @@ public:
         TextureHolder& textureHolder = TextureHolder:: getInstance();
         textureHolder.loadFromFile("../inventory/src/tomato.png", id);
     }
+
+    [[nodiscard]] Item* makeNewSame() const override { return new Tomato; }
 };
 
 class Potato : public Item
@@ -42,6 +47,8 @@ public:
         TextureHolder& textureHolder = TextureHolder:: getInstance();
         textureHolder.loadFromFile("../inventory/src/potato.png", id);
     }
+
+    [[nodiscard]] Item* makeNewSame() const override { return new Potato; }
 };
 
 class BlueFlowers : public Item
@@ -52,6 +59,8 @@ public:
         TextureHolder& textureHolder = TextureHolder:: getInstance();
         textureHolder.loadFromFile("../inventory/src/blue flowers.png", id);
     }
+
+    [[nodiscard]] Item* makeNewSame() const override { return new BlueFlowers; }
 };
 
 

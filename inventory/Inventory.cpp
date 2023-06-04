@@ -28,10 +28,6 @@ std::vector<int> Inventory::get_count_vector() const
     return result;
 }
 
-std::string Inventory::get_item_name(int id) const { return data[id]->get_name(); }
-int Inventory::get_item_count(int id) const { return data[id]->get_count(); }
-
-
 bool Inventory::can_be_placed_in(const std::string &item_id) const
 {
     for (auto& item : data)
@@ -76,7 +72,65 @@ void Inventory::pop(int id)
         delete data[id];
         data[id] = nullptr;
 
-        reshape();
+//        reshape();
+    }
+}
+
+void Inventory::transfuse(int id, float delta)
+{
+    if (data[id])
+    {
+        if (delta < 0)
+        {
+            /* Поиск предметов с таким же id */
+            for(int i = 0; i < data.size(); ++i)
+            {
+                if (data[i] && i != id)
+                {
+                    if (data[id]->get_id() == data[i]->get_id() && data[i]->get_count() < stack)
+                    {
+                        data[i]->increase(1);
+
+                        data[id]->decrease(1);
+                        if (data[id]->get_count() == 0) pop(id);
+
+                        return;
+                    }
+                }
+            }
+
+            /* Поиск пустых мест */
+            for(auto& item : data)
+            {
+                if (!item)
+                {
+                    item = data[id]->makeNewSame();
+
+                    data[id]->decrease(1);
+                    if (data[id]->get_count() == 0) pop(id);
+
+                    return;
+                }
+            }
+        }
+        if (delta > 0)
+        {
+            for(int i = 0; i < data.size(); ++i)
+            {
+                if (data[i] && i != id)
+                {
+                    if (data[id]->get_id() == data[i]->get_id() && data[id]->get_count() < stack)
+                    {
+                        data[id]->increase(1);
+                        data[i]->decrease(1);
+
+                        if (data[i]->get_count() == 0) pop(i);
+
+                        return;
+                    }
+                }
+            }
+        }
     }
 }
 
