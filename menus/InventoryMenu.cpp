@@ -25,7 +25,6 @@ void InventoryMenu::create(Inventory* playerInv)
 void InventoryMenu::update(sf::Vector2f camera_position, sf::Vector2f mousePosition)
 {
 
-
     if (isOppening)
     {
         if (clock.getElapsedTime().asSeconds() >= open_close_time)

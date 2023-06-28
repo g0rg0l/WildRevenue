@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "../player/Player.h"
 #include "EventWatcher.h"
 #include "Camera.h"
 #include "WorldTimeHolder.h"
@@ -25,12 +26,15 @@ private:
     sf::RenderTexture worldRenderTexture;
     sf::RenderTexture menuRenderTexture;
     sf::Clock clock;
-    float dt;
+    float dt = 0;
 
 private:
     WorldTimeHolder worldTimeHolder;
     Camera camera;
     TileMap map;
+
+private:
+    Player player;
     EntityHolder entityHolder;
 
 private:

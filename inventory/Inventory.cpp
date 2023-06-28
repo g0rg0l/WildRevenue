@@ -43,7 +43,7 @@ bool Inventory::can_be_placed_in(const std::string &item_id) const
     return false;
 }
 
-void Inventory::add(Item *itemToadd)
+void Inventory::add(const std::shared_ptr<ItemBase>& itemToadd)
 {
     for (auto& item : data)
     {
@@ -52,8 +52,6 @@ void Inventory::add(Item *itemToadd)
             if (item->get_id() == itemToadd->get_id() && item->get_count() < stack)
             {
                 item->increase(itemToadd->get_count());
-                delete itemToadd;
-
                 break;
             }
         }
@@ -69,8 +67,7 @@ void Inventory::pop(int id)
 {
     if (data[id])
     {
-        delete data[id];
-        data[id] = nullptr;
+        data[id].reset();
 
 //        reshape();
     }
@@ -104,7 +101,7 @@ void Inventory::transfuse(int id, float delta)
             {
                 if (!item)
                 {
-                    item = data[id]->makeNewSame();
+                    item = items::create(data[id]->get_id());
 
                     data[id]->decrease(1);
                     if (data[id]->get_count() == 0) pop(id);
@@ -132,19 +129,4 @@ void Inventory::transfuse(int id, float delta)
             }
         }
     }
-}
-
-void Inventory::reshape()
-{
-    std::vector<Item*> new_data(5);
-    for (int i = 0, i_ = 0; i < data.size(); ++i)
-        if (data[i]) new_data[i_++] = data[i];
-
-    std::swap(data, new_data);
-}
-
-Inventory::~Inventory()
-{
-    for (auto& item : data)
-        delete item;
 }

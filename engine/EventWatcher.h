@@ -43,6 +43,11 @@ public:
         return false;
     }
 
+    bool isKeyBoardKeyPressed(sf::Keyboard::Key key)
+    {
+        return sf::Keyboard::isKeyPressed(key);
+    }
+
 private:
     std::unordered_map<sf::Keyboard::Key, bool> keyboard_triggers_map;
     std::unordered_map<sf::Mouse::Button, bool> mouse_button_triggers_map;

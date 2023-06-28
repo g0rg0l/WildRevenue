@@ -6,7 +6,7 @@ Engine::Engine()
     camera.reset(window.getSize());
     worldRenderTexture.create(window.getSize().x, window.getSize().y);
     menuRenderTexture.create(window.getSize().x, window.getSize().y);
-    inventory_menu.create(entityHolder.get_player_inventory());
+    inventory_menu.create(&player.inventory);
 }
 
 int Engine::run_engine()
@@ -18,8 +18,9 @@ int Engine::run_engine()
         dt = clock.restart().asSeconds();
 
         worldTimeHolder.update(dt);
-        entityHolder.update_entity(dt, map.decor.wallBounds);
-        camera.update(dt, entityHolder.get_player_bounds());
+        player.update(dt, map.decor.wallBounds);
+        entityHolder.update();
+        camera.update(dt, player.get_bounds());
         map.clip(camera.getCameraRect());
 
         check_events();
@@ -50,6 +51,8 @@ void Engine::check_events()
 
     if (eventWatcher.isKeyBoardKeyTriggered(sf::Keyboard::I))
         inventory_menu.execute();
+    if (eventWatcher.isKeyBoardKeyPressed(sf::Keyboard::E))
+        entityHolder.entity_collect_check(&player);
 }
 
 void Engine::draw()
@@ -60,6 +63,7 @@ void Engine::draw()
     worldRenderTexture.draw(map.terrain);
     worldRenderTexture.draw(map.decor);
     worldRenderTexture.draw(entityHolder);
+    worldRenderTexture.draw(player);
     worldRenderTexture.draw(map.trees);
     worldRenderTexture.display();
 
