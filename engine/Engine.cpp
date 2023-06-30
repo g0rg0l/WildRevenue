@@ -16,9 +16,10 @@ int Engine::run_engine()
     while(window.isOpen())
     {
         dt = clock.restart().asSeconds();
-
         worldTimeHolder.update(dt);
-        player.update(dt, map.decor.wallBounds);
+
+        player.update(dt, get_all_hitboxes());
+
         entityHolder.update();
         camera.update(dt, player.get_bounds());
         map.clip(camera.getCameraRect());
@@ -57,14 +58,15 @@ void Engine::check_events()
 
 void Engine::draw()
 {
-    /* Отрисовка World */
     worldRenderTexture.setView(camera.getView());
     worldRenderTexture.clear();
     worldRenderTexture.draw(map.terrain);
     worldRenderTexture.draw(map.decor);
+    structureHolder.drawBottom(worldRenderTexture);
     worldRenderTexture.draw(entityHolder);
     worldRenderTexture.draw(player);
     worldRenderTexture.draw(map.trees);
+    structureHolder.drawUpper(worldRenderTexture);
     worldRenderTexture.display();
 
     menuRenderTexture.setView(camera.getView());
@@ -83,4 +85,18 @@ void Engine::draw()
     window.draw(worldRenderSprite);
     window.draw(menuRenderSprite);
     window.display();
+}
+
+std::vector<sf::FloatRect> Engine::get_all_hitboxes()
+{
+    std::vector<sf::FloatRect> hitboxes;
+    hitboxes.reserve(
+            map.decor.wallBounds.size() +
+            structureHolder.hitboxes.size()
+    );
+
+    hitboxes.insert(hitboxes.end(), map.decor.wallBounds.begin(), map.decor.wallBounds.end());
+    hitboxes.insert(hitboxes.end(), structureHolder.hitboxes.begin(), structureHolder.hitboxes.end());
+
+    return hitboxes;
 }

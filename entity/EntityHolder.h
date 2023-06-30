@@ -16,6 +16,7 @@ public:
 
 private:
     std::vector<std::shared_ptr<CollectableEntity>> collectable_entities;
+    std::vector<std::shared_ptr<Trader>> traders;
 };
 
 #endif

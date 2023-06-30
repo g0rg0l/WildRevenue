@@ -23,6 +23,10 @@ public:
     void check_for_collisions(float dt, const std::vector<sf::FloatRect>& wallBounds);
 
 public:
+    void setPosition(sf::Vector2f pos);
+    void setPositionByHitbox(sf::Vector2f pos);
+
+public:
     sf::FloatRect get_bounds() const;
     sf::FloatRect get_hitbox() const;
 
@@ -37,12 +41,12 @@ private:
     sf::Vector2f velocity;
     const float diagonal_move_damping_coef = 0.707;
     const float velocity_damping_coef = 0.9;
-    const float speed = 6;
+    const float speed = 60;
     std::string direction = "down";
     mutable bool isMoving = false;
 
     /* Коллизия */
-    const sf::FloatRect hitboxSizes = {0, 0, 16, 18};
+    const sf::FloatRect hitboxDef = {0, 18, 16, 18};
 
 public:
     Inventory inventory;

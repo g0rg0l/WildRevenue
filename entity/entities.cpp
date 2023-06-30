@@ -16,4 +16,19 @@ namespace entity
 
         return std::shared_ptr<CollectableEntity>(p_newEntity);
     }
+
+    std::shared_ptr<Trader> create(traders type, sf::Vector2f pos)
+    {
+        Trader* p_newEntity;
+        switch (type)
+        {
+            case traders::blacksmith: p_newEntity = new BlackSmith(pos); break;
+            case traders::herbalist: p_newEntity = new Herbalist(pos); break;
+            case traders::potion_maker: p_newEntity = new PotionMaker(pos); break;
+
+            default:  p_newEntity = nullptr; break;
+        }
+
+        return std::shared_ptr<Trader>(p_newEntity);
+    }
 }

@@ -9,6 +9,7 @@
 #include "WorldTimeHolder.h"
 #include "../map/TileMap.h"
 #include "../entity/EntityHolder.h"
+#include "../structures/StructureHolder.h"
 #include "../menus/InventoryMenu.h"
 
 class Engine
@@ -22,6 +23,9 @@ private:
     void draw();
 
 private:
+    std::vector<sf::FloatRect> get_all_hitboxes();
+
+private:
     sf::RenderWindow window;
     sf::RenderTexture worldRenderTexture;
     sf::RenderTexture menuRenderTexture;
@@ -32,6 +36,9 @@ private:
     WorldTimeHolder worldTimeHolder;
     Camera camera;
     TileMap map;
+
+private:
+    StructureHolder structureHolder;
 
 private:
     Player player;

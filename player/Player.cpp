@@ -98,10 +98,10 @@ void Player::check_for_collisions(float dt, const std::vector<sf::FloatRect> &wa
             player_global_bounds.height
     );
     sf::FloatRect hitbox_next_pos(
-            player_next_pos.left,
-            player_next_pos.top + player_next_pos.height / 2,
-            player_next_pos.width,
-            player_next_pos.height / 2
+            player_next_pos.left + hitboxDef.left,
+            player_next_pos.top + hitboxDef.top,
+            hitboxDef.width,
+            hitboxDef.height
     );
 
     for (auto& cur_wallBounds : wallBounds)
@@ -114,7 +114,7 @@ void Player::check_for_collisions(float dt, const std::vector<sf::FloatRect> &wa
                 && player_hitbox_bounds.left + player_hitbox_bounds.width > cur_wallBounds.left)
             {
                 velocity.y = 0.f;
-                sprite.setPosition(player_hitbox_bounds.left, cur_wallBounds.top - 2*player_hitbox_bounds.height);
+                setPositionByHitbox({player_hitbox_bounds.left, cur_wallBounds.top - player_hitbox_bounds.height});
             }
             // Top collision
             else if (player_hitbox_bounds.top > cur_wallBounds.top
@@ -123,7 +123,7 @@ void Player::check_for_collisions(float dt, const std::vector<sf::FloatRect> &wa
                      && player_hitbox_bounds.left + player_hitbox_bounds.width > cur_wallBounds.left)
             {
                 velocity.y = 0.f;
-                sprite.setPosition(player_hitbox_bounds.left, cur_wallBounds.top + cur_wallBounds.height - player_hitbox_bounds.height);
+                setPositionByHitbox({player_hitbox_bounds.left, cur_wallBounds.top + cur_wallBounds.height});
             }
             // Right collision
             else if (player_hitbox_bounds.left < cur_wallBounds.left
@@ -132,7 +132,7 @@ void Player::check_for_collisions(float dt, const std::vector<sf::FloatRect> &wa
                      && player_hitbox_bounds.top + player_hitbox_bounds.height > cur_wallBounds.top)
             {
                 velocity.x = 0.f;
-                sprite.setPosition(cur_wallBounds.left - player_hitbox_bounds.width, player_hitbox_bounds.top - player_hitbox_bounds.height);
+                setPositionByHitbox({cur_wallBounds.left - player_hitbox_bounds.width, player_hitbox_bounds.top});
             }
             // Left collision
             else if (player_hitbox_bounds.left > cur_wallBounds.left
@@ -141,7 +141,7 @@ void Player::check_for_collisions(float dt, const std::vector<sf::FloatRect> &wa
                      && player_hitbox_bounds.top + player_hitbox_bounds.height > cur_wallBounds.top)
             {
                 velocity.x = 0.f;
-                sprite.setPosition(cur_wallBounds.left + cur_wallBounds.width, player_hitbox_bounds.top - player_hitbox_bounds.height);
+                setPositionByHitbox({cur_wallBounds.left + cur_wallBounds.width, player_hitbox_bounds.top});
             }
         }
 }
@@ -156,11 +156,25 @@ sf::FloatRect Player::get_hitbox() const
     sf::FloatRect bounds = get_bounds();
 
     sf::FloatRect hitbox (
-            bounds.left,
-            bounds.top + bounds.height / 2,
-            bounds.width,
-            bounds.height / 2
+            bounds.left + hitboxDef.left,
+            bounds.top + hitboxDef.top,
+            hitboxDef.width,
+            hitboxDef.height
     );
 
     return hitbox;
+}
+
+void Player::setPosition(const sf::Vector2f pos)
+{
+    sprite.setPosition(pos);
+}
+
+void Player::setPositionByHitbox(const sf::Vector2f pos)
+{
+    auto currentHitbox = get_hitbox();
+    sf::Vector2f currentHitboxPos = {currentHitbox.left, currentHitbox.top};
+
+    auto diff = pos - currentHitboxPos;
+    sprite.move(diff);
 }

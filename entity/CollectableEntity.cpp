@@ -9,7 +9,7 @@ CollectableEntity::CollectableEntity(
         hitbox_range(hitbox_range), item_id(std::move(item_id)), ret_item_type(ret_item_type)
 {
     TextureHolder& textureholder = TextureHolder::getInstance();
-    textureholder.loadFromFile("../entity/src/" + src_name + ".png", src_name);
+    textureholder.loadFromFile("../entity/src/collectables/" + src_name + ".png", src_name);
 
     auto texture = textureholder.getResource(src_name);
 
